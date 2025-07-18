@@ -1,0 +1,75 @@
+const products = [
+  { id: 1, name: "জামা", category: "clothes", price: 500, image: "images/jama.jpg" },
+  { id: 2, name: "প্যান্ট", category: "clothes", price: 650, image: "images/pant.jpg" },
+  { id: 3, name: "খেলনা ট্রেন", category: "toys", price: 300, image: "images/train.jpg" },
+  { id: 4, name: "চিকিৎসা কিট", category: "essentials", price: 800, image: "images/kit.jpg" },
+  { id: 5, name: "বল", category: "toys", price: 150, image: "images/ball.jpg" }
+];
+
+let cart = [];
+
+function showProducts(filter = "") {
+  const productList = document.getElementById("product-list");
+  const searchQuery = document.getElementById("searchBox").value.toLowerCase();
+  productList.innerHTML = "";
+
+  const filtered = products.filter(p => {
+    const matchCategory = filter ? p.category === filter : true;
+    const matchSearch = p.name.toLowerCase().includes(searchQuery);
+    return matchCategory && matchSearch;
+  });
+
+  filtered.forEach(product => {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>দাম: ${product.price} টাকা</p>
+      <button onclick="addToCart(${product.id})">🛒 Add to Cart</button>
+    `;
+    productList.appendChild(div);
+  });
+}
+
+function addToCart(id) {
+  const item = products.find(p => p.id === id);
+  const found = cart.find(p => p.id === id);
+  if (found) {
+    found.qty += 1;
+  } else {
+    cart.push({ ...item, qty: 1 });
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  const summary = document.getElementById("summary");
+  let totalQty = 0;
+  let totalPrice = 0;
+
+  cart.forEach(p => {
+    totalQty += p.qty;
+    totalPrice += p.price * p.qty;
+  });
+
+  summary.innerHTML = `
+    <p>মোট পণ্য: ${totalQty}টি</p>
+    <p>মোট দাম: ${totalPrice} টাকা</p>
+    <button onclick="placeOrder()">📦 অর্ডার করুন</button>
+  `;
+}
+
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("অর্ডার করার জন্য কমপক্ষে একটি পণ্য যোগ করুন!");
+    return;
+  }
+
+  alert("অর্ডার গ্রহণ করা হয়েছে। ধন্যবাদ!");
+  cart = [];
+  updateSummary();
+}
+
+document.getElementById("searchBox").addEventListener("input", () => showProducts());
+window.onload = () => showProducts();
