@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rashed Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Rashed-Shop</h1>
+    <input type="text" id="searchBox" placeholder="খোঁজো জামা, খেলনা...">
+  </header>
+
+  <main>
+    <section id="filters">
+      <button onclick="filterProducts('all')">সব</button>
+      <button onclick="filterProducts('clothes')">জামাকাপড়</button>
+      <button onclick="filterProducts('toys')">খেলনা</button>
+      <button onclick="filterProducts('essential')">জরুরি</button>
+    </section>
+
+    <section id="product-list"></section>
+  </main>
+
+  <footer>
+    <div id="summary">
+      <p>মোট প্রোডাক্ট: <span id="totalQuantity">0</span></p>
+      <p>মোট দাম: <span id="totalPrice">0</span> টাকা</p>
+      <button onclick="placeOrder()">Order Now</button>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
